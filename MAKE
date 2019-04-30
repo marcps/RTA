@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc -Iinclude/ -Isrc/ -I. src/rta.c src/constants.c src/zer0.c -o bin/EXEC -lm
