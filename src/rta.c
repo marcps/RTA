@@ -1,150 +1,44 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+
 #include "constants.h"
 #include "zer0.h"
+#include "functions.h"
 
 
-double vv(double tau, double w, double p2)
+int main (int argc, char const *argv[])
 {
-	return (sqrt(w*w+p2*tau*tau))/tau;
-}
-
-double f_0(double tau, double w, double p2, double m0)
-{
-	/*Here we have to read some parameters*/
-	return pow((1/(2*PI)),3)*exp(-sqrt((1-EPS)*w*w+p2*tau*tau)/(TAU0*m0));
-}
-double f_eq(double tau, double w, double p2, double Tempr)
-{
-	return pow((1/(2*PI)),3)*exp(-sqrt(w*w+p2*tau*tau)/(tau*Tempr));
-}
-
-double Energy_0(double tau)
-{
-	double m0=zero_of_m0(); //in the library zer0.h
-	/*Calculates the INITIAL ENERGY integrating over a grid of w,p2*/
-	double E, dP2, dW,currW,currP2;
-	int i, j;
-
-	E=0.0;
-	dW=(WF-W0)/((double)NITER);
-	dP2=(P2_F-P2_0)/((double)NITER);
-
-	/*We integrate */
-	for(i=0;i<NITER;i++)
-	{
-		currW=W0+(double)i*dW;
-		for(j=0;j<NITER;j++)
-		{
-			currP2=P2_0+(double)j*dP2;
-			E+=PI*dW*dP2*f_0(tau,currW,currP2,m0)*vv(tau,currW,currP2)/tau/tau;
-		}
-	}
-	return E;
-}
-
-double Energy(double tau,double f[NITER][NITER])
-{
-	//Calculaters the ENERGY integrating over a grid of w,p
-	double E,dP2,dW,currW,currP2;
-	int i,j;
-
-	E=0.0;
-	dW=(WF-W0)/((double)NITER);
-	dP2=(P2_F-P2_0)/((double)NITER);
-
-	for(i=0;i<NITER;i++)
-	{
-		currW=W0+(double)i*dW;
-		for(j=0;j<NITER;j++)
-		{
-			currP2=P2_0+(double)j*dP2;
-			E+=PI*dW*dP2*f[i][j]*vv(tau,currW,currP2)/tau/tau; //Check if this expression is correct.
-		}
-	}
-	return E;
-}
-
-double Tempr(double E)
-{
-	/*Returns the TEMPERATURE*/
-	return sqrt(sqrt((6/PI)*E));
-}
-
-double TemprTau(double E, double tau)
-{
-	return sqrt(sqrt((6/PI)*E))*pow(tau,(1/3));
-}
-
-void calculate_f(double f[NITER][NITER],double t,double tempr, double m0)
-{
-	double dW,dP2,currW,currP2;
-	int i,j;
-	dW=(WF-W0)/((double)NITER);
-	dP2=(P2_F-P2_0)/((double)NITER);
-
-	for(i=0;i<NITER;i++)
-	{
-		currW=W0+(double)i*dW;
-		for(j=0;j<NITER;j++)
-		{
-			currP2=P2_0+(double)j*dP2;
-			f[i][j]=f[i][j]+(f_0(t,currW,currP2,m0)-(f_eq(t,currW,currP2,tempr)))/t;
-		}
-	}
-}
-
-void matrix_init(int d,double m[d][d])
-{
-	int i,j;
-        for(i=0;i<d;i++)
-	{
-		for(j=0;j<d;j++)
-		{
-			m[i][j]=0.0;
-		}
-	}
-}
-
-void matrix_print(int d, double m[d][d])
-{
-	int i,j;
-	for(i=0;i<d;i++)
-	{
-		printf("\n");
-		for(j=0;j<d;j++)
-		{
-			printf("%f ",m[i][j]);
-		}
-	}
-	printf("\n");
-}
-
-
-
-int main ()
-{
-	double energy,TemperatureTau,Temperature,currT;
+	double TemperatureTau,Temperature,currT,sn;
 	double dT=(T_F-T_0)/((double)TNITER);
 	double f[NITER][NITER];
 	int i,j;
-	double m0= zero_of_m0(); //in the library zer0.h
+	double m0;
+	double energy[2],deri_E;
+	double pressure_L[2],deri_PL;
 
-	/*FILE INIT*/
-	FILE *fp;
-	fp=fopen("temp.dat","w");
-
+	//FILE INIT----------------------------------------------------
+	if(argc<3)
+	{
+		printf("[!]ERROR. Please type the names of the outpu .dat files!\n run ./EXEC <1>.dat <2>.dat\n");
+		return 1;
+	}
+	FILE *fp,*fp1;
+	fp=fopen(argv[1],"w");
+	fp1=fopen(argv[2],"w");
+	//-------------------------------------------------------------
+	m0= zero_of_m0(); //in the library zer0.h
 	/*MATRIX INITIALIZATION*/
-        matrix_init(NITER,f); 
+        matrix_init(NITER,f);
 
 	/*1st iteration*/
-	energy=Energy_0(T_0);
-	TemperatureTau=TemprTau(energy,T_0);
-	Temperature=Tempr(energy);
+	energy[0]=Energy_0(T_0);
+	pressure_L[0]=Pressure_L_0(T_0);
+	Temperature=Tempr(energy[0]);
 
-	printf("[*]Iteration 0: Energy= %f; Temperature= %f\n",energy,Tempr);	
-	fprintf(fp,"%.10f %.10f\n",T_0,TemperatureTau);
+	printf("[*]Iteration 0: Energy= %f; Temperature= %f\n; Pressure_L= %f\n",energy[0],Tempr,pressure_L[0]);
+	fprintf(fp,"%.15f %.15f\n",T_0,Temperature*pow(T_0,1/3));
+
 	/*Now we need to return the 1st iteration of f in the form of a matrix*/
 	calculate_f(f,T_0,Temperature,m0);
 
@@ -152,17 +46,27 @@ int main ()
 	for (i=0;i<=TNITER;i++)
 	{
 		currT=T_0+(double)i*dT;
-		energy=Energy(currT,f);
 
-		Temperature=Tempr(energy);
-		TemperatureTau=TemprTau(energy,currT);
+		energy[1]=Energy(currT,f);
+		deri_E=(energy[1]-energy[0])/dT;
 
-		printf("[*]Iteration %d: Energy= %.10f; Temperature=%.10f\n",i+1,energy,Temperature);
-		fprintf(fp,"%.10f %.10f\n",currT,TemperatureTau);
+		pressure_L[1]=Pressure_L(currT,f);
+
+		Temperature=Tempr(energy[1]);
+
+		sn=(currT*deri_E/(energy[1]+pressure_L[1]))-1;
+
+		printf("[*]Iteration %d: Energy= %.10f; Temperature=%.10f; Pressure_L= %.10f\n",i+1,energy,Temperature,pressure_L[1]);
+
+		fprintf(fp,"%.15f %.15f\n",currT,Temperature*pow(currT,1/3));
+		fprintf(fp1,"%.15f %.15f\n",currT*Temperature,sn);
 
 		calculate_f(f,currT,Temperature,m0);
+		energy[0]=energy[1];
+		pressure_L[0]=pressure_L[1];
 	}
 	fclose(fp);
+	fclose(fp1);
 	return 0;
 }
 

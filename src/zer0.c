@@ -48,9 +48,11 @@ double zero_of_m0()
 	int i,n_max;
 	double a,b,a1,b1,p,tol;
 
-	a=0.1;
+	//Can this intervals be calculated?
+	a=0.001;
 	b=10;
-	tol=0.0001;
+
+	tol=0.000001;
 	if(Energy_foo(T_0,a)*Energy_foo(T_0,b)>0)
 	{
 		printf("[!]Error when calculating the root of the initial energy\n");
