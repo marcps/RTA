@@ -190,4 +190,42 @@ void matrix_print(int d, double m[d][d])
         }
         printf("\n");
 }
+//############### ZERO ###############################################################
+/*These functions are used to find initial conditions , they must be almost equal
+their respective functions named without the "_zero" suffix*/
+double vv_zero(double tau,double w,double p2)
+{
+        return sqrt(w*w+p2*tau*tau);
+}
+
+double f_0_zero(double tau, double w, double p2, double m0)
+{
+        /*f_0 is the initial state density function*/
+        return pow((1/(2*PI)),3)*exp(-sqrt((1-EPS)*w*w+p2*tau*tau)/(TAU0*m0));
+}
+
+double Energy_0_zero(double tau,double m0)
+{
+        /*Calculates the INITIAL ENERGY integrating over a grid of w,p2*/
+        double E, dP2, dW,currW,currP2;
+        int i, j;
+
+        E=0.0;
+        dW=(WF-W0)/((double)NITER);
+        dP2=(P2_F-P2_0)/((double)NITER);
+
+        /*We integrate */
+        for(i=0;i<NITER;i++)
+        {
+                currW=W0+(double)i*dW;
+                for(j=0;j<NITER;j++)
+                {
+                        currP2=P2_0+(double)j*dP2;
+                        E+=PI*dW*dP2*f_0_zero(tau,currW,currP2,m0)*vv_zero(tau,currW,currP2)/tau/tau;
+                }
+        }
+        return E-1;
+}
+
+//############### ZERO ###############################################################
 
