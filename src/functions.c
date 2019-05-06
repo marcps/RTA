@@ -140,12 +140,13 @@ double Tempr(double E)
         return sqrt(PI*sqrt(E/3));
 }
 
-void calculate_f(double f[NITER][NITER],double t,double tempr, double m0)
+void calculate_f(double f[NITER][NITER],double tau,double tempr, double m0)
 {
 	/*given the matrix f, calculates its next iteration of f with its derivative*/
 	/*m0 has to be calculated with the function zero_of_m0() in the library zer0.h*/
         double dW,dP2,currW,currP2;
         int i,j;
+	double dTau=(T_F-T_0)/((double)TNITER);
 
         dW=(WF-W0)/((double)NITER);
         dP2=(P2_F-P2_0)/((double)NITER);
@@ -156,10 +157,33 @@ void calculate_f(double f[NITER][NITER],double t,double tempr, double m0)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        f[i][j]=f[i][j]+(f_0(t,currW,currP2,m0)-(f_eq(t,currW,currP2,tempr)))/t;
+                        f[i][j]=f[i][j]+dTau*(f_0(tau,currW,currP2,m0)-f_eq(tau,currW,currP2,tempr))/tau;
                 }
         }
 }
+
+void calculate_f_0(double f[NITER][NITER],double tau,double tempr, double m0)
+{
+        /*given the matrix f, calculates its next iteration of f with its derivative*/
+        /*m0 has to be calculated with the function zero_of_m0() in the library zer0.h*/
+        double dW,dP2,currW,currP2;
+        int i,j;
+        double dTau=(T_F-T_0)/((double)TNITER);
+
+        dW=(WF-W0)/((double)NITER);
+        dP2=(P2_F-P2_0)/((double)NITER);
+
+        for(i=0;i<NITER;i++)
+        {
+                currW=W0+(double)i*dW;
+                for(j=0;j<NITER;j++)
+                {
+                        currP2=P2_0+(double)j*dP2;
+                        f[i][j]=f_0(tau,currW,currP2,m0)+dTau*(f_0(tau,currW,currP2,m0)-f_eq(tau,currW,currP2,tempr))/tau;
+                }
+        }
+}
+
 
 void matrix_init(int d,double m[d][d])
 {

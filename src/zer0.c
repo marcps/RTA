@@ -12,10 +12,10 @@ double zero_of_m0()
 	double a,b,a1,b1,p,tol;
 
 	//Can this intervals be calculated?
-	a=0.1;
-	b=100;
+	a=0.000001;
+	b=1000;
 
-	tol=0.000001;
+	tol=0.00000001;
 	if(Energy_0_zero(T_0,a)*Energy_0_zero(T_0,b)>0)
 	{
 		printf("[!]Error when calculating the root of the initial energy\n");
@@ -39,5 +39,7 @@ double zero_of_m0()
 		}
 
 	}
+	printf("\nThe minimized parameter is: m0= %.5f\n",
+		p);
 	return p;
 }

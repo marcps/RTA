@@ -16,14 +16,14 @@ corresponding to the files fp, fp1, fp2*/
 */
 int main (int argc, char const *argv[])
 {
-	double TemperatureTau,currTau,sn;
+	double currTau,sn;
 	double dTau=(T_F-T_0)/((double)TNITER);
 	double f[NITER][NITER];
-	int i,j;
+	int i;
 	double m0;
 	double Temperature[2],deri_T;
 	double energy[2],deri_E;
-	double pressure_L[2],deri_PL;
+	double pressure_L[2];//deri_PL;
 
 	//-----------------------FILE INIT-----------------------------
 	if(argc<4)
@@ -58,7 +58,7 @@ int main (int argc, char const *argv[])
 		T_0,Temperature[0]*pow(T_0,1/3));
 
 	/*Now we need to return the 1st iteration of f in the form of a matrix*/
-	calculate_f(f,T_0,Temperature[0],m0);
+	calculate_f_0(f,T_0+dTau,Temperature[0],m0);
 
 	/*Subsequent iterations*/
 	for (i=1;i<=TNITER;i++)
@@ -75,8 +75,8 @@ int main (int argc, char const *argv[])
 
 		sn=abs(currTau*deri_E/(energy[1]+pressure_L[1]))-1; //This has to be a very small number
 
-		printf("[*]Iteration %d: Energy= %.15f; Temperature=%.15f; Pressure_L= %.15f\n",
-			i,energy[1],Temperature,pressure_L[1]);
+		printf("[*]Iteration %d: Energy= %.15f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",
+			i,energy[1],Temperature[1],pressure_L[1],sn);
 
 		fprintf(fp,"%.15f %.15f\n",
 			currTau,Temperature[1]*pow(currTau,1/3));
@@ -85,7 +85,7 @@ int main (int argc, char const *argv[])
 		fprintf(fp2,"%.15f %.15f\n",
 			currTau*Temperature[1],currTau*deri_T/Temperature[1]);
 
-		calculate_f(f,currTau,Temperature[1],m0);
+		calculate_f(f,currTau+dTau,Temperature[1],m0);
 		energy[0]=energy[1];
 		Temperature[0]=Temperature[1];
 		pressure_L[0]=pressure_L[1];
