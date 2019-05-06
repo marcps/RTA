@@ -4,4 +4,4 @@ set grid
 set terminal png size 1000,500 enhanced font "Helvetica,14"
 set output 'graph1.png'
 
-plot 'temp01.dat' u 1:2 w l title 'eps=0.1' ,'temp02.dat'  u 1:2 w l title 'eps=0.2', 'temp08.dat'  u 1:2 w l title 'eps=0.8'
+plot 'temp.dat' u 1:2 w l,'temp02.dat' u 1:2 w l, 'temp03.dat' u 1:2 w l, 'temp08.dat' u 1:2 w l,'temp01.dat' u 1:2 w l

@@ -21,9 +21,8 @@ double f_eq(double tau, double w, double p2, double Tempr)
         return pow((1/(2*PI)),3)*exp(-sqrt(w*w+p2*tau*tau)/(tau*Tempr));
 }
 
-double Energy_0(double tau)
+double Energy_0(double tau,double m0)
 {
-        double m0=zero_of_m0(); //in the library zer0.h
         /*Calculates the INITIAL ENERGY integrating over a grid of w,p2*/
         double E, dP2, dW,currW,currP2;
         int i, j;

@@ -79,7 +79,7 @@ int main (int argc, char const *argv[])
 			i,energy[1],Temperature,pressure_L[1]);
 
 		fprintf(fp,"%.15f %.15f\n",
-			currTau,Temperature[1]*pow(currTau,1/3));
+			currTau,pressure_L[1]/energy[1]);
 		fprintf(fp1,"%.15f %.15f\n",
 			currTau*Temperature[1],sn);
 		fprintf(fp2,"%.15f %.15f\n",
