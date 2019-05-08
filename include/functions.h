@@ -1,3 +1,4 @@
+double tau_eq(double tempr);
 double vv(double tau,double w,double p2);
 double f_0(double tau, double w, double p2, double m0);
 double f_eq(double tau, double w, double p2, double Tempr);

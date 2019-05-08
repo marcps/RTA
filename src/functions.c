@@ -5,6 +5,11 @@
 #include "constants.h"
 #include "zer0.h"
 
+double tau_eq(double tempr)
+{
+	return 1.0/tempr;
+}
+
 double vv(double tau,double w,double p2)
 {
 	return sqrt(w*w+p2*tau*tau);
@@ -28,8 +33,8 @@ double Energy_0(double tau,double m0)
         int i, j;
 
         E=0.0;
-        dW=(WF-W0)/((double)NITER);
-        dP2=(P2_F-P2_0)/((double)NITER);
+        dW=fabs((WF-W0)/((double)NITER));
+        dP2=fabs((P2_F-P2_0)/((double)NITER));
 
         /*We integrate */
         for(i=0;i<NITER;i++)
@@ -51,8 +56,8 @@ double Energy(double tau,double f[NITER][NITER])
         int i,j;
 
         E=0.0;
-        dW=(WF-W0)/((double)NITER);
-        dP2=(P2_F-P2_0)/((double)NITER);
+        dW=fabs((WF-W0)/((double)NITER));
+        dP2=fabs((P2_F-P2_0)/((double)NITER));
 
         for(i=0;i<NITER;i++)
         {
@@ -60,7 +65,7 @@ double Energy(double tau,double f[NITER][NITER])
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        E+=PI*dW*dP2*f[i][j]*vv(tau,currW,currP2)/tau/tau; //Check if this expression is c$
+                        E+=PI*dW*dP2*f[i][j]*vv(tau,currW,currP2)/tau/tau;
                 }
         }
         return E;
@@ -157,7 +162,8 @@ void calculate_f(double f[NITER][NITER],double tau,double tempr, double m0)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        f[i][j]=f[i][j]+dTau*(f_0(tau,currW,currP2,m0)-f_eq(tau,currW,currP2,tempr))/tau;
+                        f[i][j]=f[i][j]+
+				dTau*(f_eq(tau,currW,currP2,tempr)-f[i][j]) /tau_eq(tempr);
                 }
         }
 }
@@ -179,7 +185,8 @@ void calculate_f_0(double f[NITER][NITER],double tau,double tempr, double m0)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        f[i][j]=f_0(tau,currW,currP2,m0)+dTau*(f_0(tau,currW,currP2,m0)-f_eq(tau,currW,currP2,tempr))/tau;
+                        f[i][j]=f_0(tau,currW,currP2,m0)+
+				dTau*(f_eq(tau,currW,currP2,tempr)-f_0(tau,currW,currP2,m0))/tau_eq(tempr);
                 }
         }
 }
@@ -213,7 +220,7 @@ void matrix_print(int d, double m[d][d])
         }
         printf("\n");
 }
-//############### ZERO ###############################################################
+//################################ ZERO ##########################################
 /*These functions are used to find initial conditions , they must be almost equal
 their respective functions named without the "_zero" suffix*/
 double vv_zero(double tau,double w,double p2)
