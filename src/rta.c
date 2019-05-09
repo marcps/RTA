@@ -73,10 +73,11 @@ int main (int argc, char const *argv[])
 		Temperature[1]=Tempr(energy[1]);
 		deri_T=(Temperature[1]-Temperature[0])/dTau;
 
-		sn=fabs(currTau*deri_E/(energy[1]+pressure_L[1]))-1; //This has to be a very small number
+		//This has to be a very small number
+		sn=fabs(currTau*deri_E/(energy[1]+pressure_L[1]))-1;
 
-		printf("[*]Iteration %d: Energy= %.15f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",
-			i,energy[1],Temperature[1],pressure_L[1],sn);
+		printf("[*]Iteration %d: Energy= %.15f; deriE= %.5f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",
+			i,energy[1],deri_E,Temperature[1],pressure_L[1],sn);
 
 		fprintf(fp,"%.15f %.15f\n",
 			currTau,Temperature[1]*pow(currTau,1/3));

@@ -163,7 +163,7 @@ void calculate_f(double f[NITER][NITER],double tau,double tempr, double m0)
                 {
                         currP2=P2_0+(double)j*dP2;
                         f[i][j]=f[i][j]+
-				dTau*(f_eq(tau,currW,currP2,tempr)-f[i][j]) /tau_eq(tempr);
+				(dTau*(f_eq(tau,currW,currP2,tempr)-f[i][j]) /tau_eq(tempr));
                 }
         }
 }
