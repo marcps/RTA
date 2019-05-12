@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc -Iinclude/ -Isrc/ -I. src/limits.c src/constants.c -o bin/LEXEC -lm -Wall

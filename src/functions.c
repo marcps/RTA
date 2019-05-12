@@ -7,6 +7,7 @@
 
 double tau_eq(double tempr)
 {
+	//The scale constant here is 1
 	return 1.0/tempr;
 }
 
@@ -18,7 +19,7 @@ double vv(double tau,double w,double p2)
 double f_0(double tau, double w, double p2, double m0)
 {
         /*f_0 is the initial state density function*/
-        return pow((1/(2*PI)),3)*exp(-sqrt((1-EPS)*w*w+p2*tau*tau)/(TAU0*m0));
+        return pow((1/(2*PI)),3)*exp(-sqrt((1-EPS)*w*w+p2*tau*tau)/(tau*m0));
 }
 
 double f_eq(double tau, double w, double p2, double Tempr)
@@ -51,7 +52,7 @@ double Energy_0(double tau,double m0)
 
 double Energy(double tau,double f[NITER][NITER])
 {
-        //Calculaters the ENERGY integrating over a grid of w,p
+        /*Calculaters the ENERGY integrating over a grid of w,p2*/
         double E,dP2,dW,currW,currP2;
         int i,j;
 
@@ -73,7 +74,7 @@ double Energy(double tau,double f[NITER][NITER])
 
 double Pressure_L(double tau,double f[NITER][NITER])
 {
-        //Calculaters the LONGITUDINAL PRESSURE integrating over a grid of w,p
+        /*Calculaters the LONGITUDINAL PRESSURE integrating over a grid of w,p*/
         double pL,dP2,dW,currW,currP2;
         int i,j;
 
@@ -93,9 +94,8 @@ double Pressure_L(double tau,double f[NITER][NITER])
         return pL;
 }
 
-double Pressure_L_0(double tau)
+double Pressure_L_0(double tau,double m0)
 {
-        double m0=zero_of_m0(); //in the library zer0.h
         /*Calculates the INITIAL ENERGY integrating over a grid of w,p2*/
         double Pr_L, dP2, dW,currW,currP2;
         int i, j;
@@ -119,7 +119,7 @@ double Pressure_L_0(double tau)
 
 double Pressure_T(double tau,double f[NITER][NITER])
 {
-        //Calculaters the TRANSVERSE PRESSURE integrating over a grid of w,p
+        /*Calculaters the TRANSVERSE PRESSURE integrating over a grid of w,p2*/
         double pT,dP2,dW,currW,currP2;
         int i,j;
 

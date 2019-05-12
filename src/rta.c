@@ -16,6 +16,7 @@ corresponding to the files fp, fp1, fp2*/
 */
 int main (int argc, char const *argv[])
 {
+	printf("%f",PI);
 	double currTau,sn;
 	double dTau=(T_F-T_0)/((double)TNITER);
 	double f[NITER][NITER];
@@ -42,14 +43,15 @@ int main (int argc, char const *argv[])
 	fp2=fopen(argv[3],"w");
 	//-------------------------------------------------------------
 
-	m0=zero_of_m0(); //in the library zer0.h
+	///////////////////////////m0=zero_of_m0(); //in the library zer0.h
+	m0=1;
 
 	/*MATRIX INITIALIZATION*/
         matrix_init(NITER,f);
 
 	/*1st iteration*/
 	energy[0]=Energy_0(T_0,m0);
-	pressure_L[0]=Pressure_L_0(T_0);
+	pressure_L[0]=Pressure_L_0(T_0,0);
 	Temperature[0]=Tempr(energy[0]);
 
 	printf("[*]Iteration 0: Energy= %.15f; Temperature= %.15f; Pressure_L= %.15f\n",
@@ -74,18 +76,22 @@ int main (int argc, char const *argv[])
 		deri_T=(Temperature[1]-Temperature[0])/dTau;
 
 		//This has to be a very small number
-		sn=fabs(currTau*deri_E/(energy[1]+pressure_L[1]))-1;
+		//sn=fabs(currTau*deri_E/(energy[1]+pressure_L[1]))-1;
+		sn=currTau*deri_E+energy[1]+pressure_L[1];
 
+		//--------------------------------- PRINTING -----------------------------------------------------------
 		printf("[*]Iteration %d: Energy= %.15f; deriE= %.5f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",
 			i,energy[1],deri_E,Temperature[1],pressure_L[1],sn);
 
-		fprintf(fp,"%.15f %.15f\n",
-			currTau,Temperature[1]*pow(currTau,1/3));
+		/*fprintf(fp,"%.15f %.15f\n",
+			currTau,Temperature[1]*pow(currTau,1/3));*///////////////////////////////////////////////////////
+		fprintf(fp, "%.15f %.15f\n",currTau,energy[1]);
 		fprintf(fp1,"%.15f %.15f\n",
-			currTau*Temperature[1],sn);
+			currTau,sn);
 		fprintf(fp2,"%.15f %.15f\n",
 			currTau*Temperature[1],currTau*deri_T/Temperature[1]);
-
+		//------------------------------------------------------------------------------------------------------
+		//Preparing for the next iteration
 		calculate_f(f,currTau+dTau,Temperature[1],m0);
 		energy[0]=energy[1];
 		Temperature[0]=Temperature[1];
