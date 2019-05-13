@@ -44,7 +44,7 @@ double Energy_0(double tau,double m0)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        E+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*vv(tau,currW,currP2)/tau/tau;
+                        E+=PI*dW*dP2*f_0(tau,currW,currP2,m0)*vv(tau,currW,currP2)/tau/tau;
                 }
         }
         return E;
@@ -66,7 +66,7 @@ double Energy(double tau,double **f)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        E+=2*PI*dW*dP2*f[i][j]*vv(tau,currW,currP2)/tau/tau;
+                        E+=PI*dW*dP2*f[i][j]*vv(tau,currW,currP2)/tau/tau;
                 }
         }
         return E;
@@ -88,7 +88,8 @@ double Pressure_L(double tau,double **f)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        pL+=2*PI*dW*dP2*f[i][j]*(currW*currW*vv(tau,currW,currP2))/tau/tau;
+			printf("%.15f\n",vv(tau,currW,currP2));
+                        pL+=PI*dW*dP2*f[i][j]*(currW*currW/vv(tau,currW,currP2))/tau/tau;
                 }
         }
         return pL;
@@ -111,7 +112,7 @@ double Pressure_L_0(double tau,double m0)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        Pr_L+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW*vv(tau,currW,currP2))/tau/tau;
+                        Pr_L+=PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW*vv(tau,currW,currP2))/tau/tau;
                 }
         }
         return Pr_L;
@@ -133,7 +134,7 @@ double Pressure_T(double tau,double **f)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+(double)j*dP2;
-                        pT+=2*PI*dW*dP2*f[i][j]*(currP2*vv(tau,currW,currP2)); //Check if this expression is c$
+                        pT+=PI*dW*dP2*f[i][j]*(currP2*vv(tau,currW,currP2)); //Check if this expression is c$
                 }
         }
         return pT;
@@ -163,7 +164,7 @@ void calculate_f(double **f,double tau,double tempr, double m0)
                 {
                         currP2=P2_0+(double)j*dP2;
                         f[i][j]=f[i][j]+
-				(dTau*(f_eq(tau,currW,currP2,tempr)-f[i][j])/tau_eq(tempr));
+				(dTau*(f_eq(tau,currW,currP2,tempr)-f[i][j]) /tau_eq(tempr));
                 }
         }
 }

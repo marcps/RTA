@@ -56,7 +56,7 @@ double Pressure_L_0(double tau,double m0,double p2_0,double p2_f, double w_0, do
                 for(j=0;j<niter;j++)
                 {
                         currP2=p2_0+(double)j*dP2;
-                        Pr_L+=PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW*vv(tau,currW,currP2))/tau/tau;
+                        Pr_L+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW*vv(tau,currW,currP2))/tau/tau;
                 }
         }
         return Pr_L;
