@@ -85,7 +85,6 @@ int main (int argc, char **argv)
 
 	//Now we need to return the 1st iteration of f in the form of a matrix
 	calculate_f_0(f,T_0+dTau,Temperature[0],m0);
-	matrix_print(10,f);
 
 	//Subsequent iterations
 	for (i=1;i<=TNITER;i++)
@@ -101,8 +100,7 @@ int main (int argc, char **argv)
 		deri_T=(Temperature[1]-Temperature[0])/dTau;
 
 		//This has to be a very small number
-		//sn=fabs(currTau*deri_E/(energy[1]+pressure_L[1]))-1;
-		sn=currTau*deri_E+energy[1]+pressure_L[1];
+		sn=fabs((currTau*deri_E)/(energy[1]+pressure_L[1]))-1;
 
 		//--------------------------------- PRINTING -----------------------------------------------------------
 		printf("[*]Iteration %d: Energy= %.15f; deriE= %.5f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",

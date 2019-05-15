@@ -8,7 +8,8 @@
 double tau_eq(double tempr)
 {
 	//The scale constant here is 1
-	return 1.0/tempr;
+	double gamma=1.0;
+	return gamma/tempr;
 }
 
 double vv(double tau,double w,double p2)
@@ -34,16 +35,16 @@ double Energy_0(double tau,double m0)
         int i, j;
 
         E=0.0;
-        dW=fabs((WF-W0)/((double)NITER));
-        dP2=fabs((P2_F-P2_0)/((double)NITER));
+        dW=(WF-W0)/((double)NITER);
+        dP2=(P2_F-P2_0)/((double)NITER);
 
         /*We integrate */
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
+                        currP2=P2_0+((double)j+0.5)*dP2;
                         E+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*vv(tau,currW,currP2)/tau/tau;
                 }
         }
@@ -57,15 +58,15 @@ double Energy(double tau,double **f)
         int i,j;
 
         E=0.0;
-        dW=fabs((WF-W0)/((double)NITER));
-        dP2=fabs((P2_F-P2_0)/((double)NITER));
+        dW=(WF-W0)/((double)NITER);
+        dP2=(P2_F-P2_0)/((double)NITER);
 
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
+                        currP2=P2_0+((double)j+0.5)*dP2;
                         E+=2*PI*dW*dP2*f[i][j]*vv(tau,currW,currP2)/tau/tau;
                 }
         }
@@ -84,11 +85,11 @@ double Pressure_L(double tau,double **f)
 
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
-                        pL+=2*PI*dW*dP2*f[i][j]*(currW*currW*vv(tau,currW,currP2))/tau/tau;
+                        currP2=P2_0+((double)j+0.5)*dP2;
+                        pL+=2*PI*dW*dP2*f[i][j]*(currW*currW/vv(tau,currW,currP2))/tau/tau;
                 }
         }
         return pL;
@@ -107,11 +108,11 @@ double Pressure_L_0(double tau,double m0)
         /*We integrate */
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
-                        Pr_L+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW*vv(tau,currW,currP2))/tau/tau;
+                        currP2=P2_0+((double)j+0.5)*dP2;
+                        Pr_L+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW/vv(tau,currW,currP2))/tau/tau;
                 }
         }
         return Pr_L;
@@ -129,10 +130,10 @@ double Pressure_T(double tau,double **f)
 
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
+                        currP2=P2_0+((double)j+0.5)*dP2;
                         pT+=2*PI*dW*dP2*f[i][j]*(currP2*vv(tau,currW,currP2)); //Check if this expression is c$
                 }
         }
@@ -158,10 +159,10 @@ void calculate_f(double **f,double tau,double tempr, double m0)
 
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
+                        currP2=P2_0+((double)j+0.5)*dP2;
                         f[i][j]=f[i][j]+
 				(dTau*(f_eq(tau,currW,currP2,tempr)-f[i][j])/tau_eq(tempr));
                 }
@@ -181,10 +182,10 @@ void calculate_f_0(double **f,double tau,double tempr, double m0)
 
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
+                        currP2=P2_0+((double)j+0.5)*dP2;
                         f[i][j]=f_0(tau,currW,currP2,m0)+
 				dTau*(f_eq(tau,currW,currP2,tempr)-f_0(tau,currW,currP2,m0))/tau_eq(tempr);
                 }
@@ -247,10 +248,10 @@ double Energy_0_zero(double tau,double m0)
         /*We integrate */
         for(i=0;i<NITER;i++)
         {
-                currW=W0+(double)i*dW;
+                currW=W0+((double)i+0.5)*dW;
                 for(j=0;j<NITER;j++)
                 {
-                        currP2=P2_0+(double)j*dP2;
+                        currP2=P2_0+((double)j+0.5)*dP2;
                         E+=PI*dW*dP2*f_0_zero(tau,currW,currP2,m0)*vv_zero(tau,currW,currP2)/tau/tau;
                 }
         }

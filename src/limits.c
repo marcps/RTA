@@ -23,16 +23,16 @@ double Energy_0(double tau,double m0,double p2_0,double p2_f, double w_0, double
         int i, j;
 
         E=0.0;
-        dW=fabs((w_f-w_0)/((double)niter));
-        dP2=fabs((p2_f-p2_0)/((double)niter));
+        dW=(w_f-w_0)/((double)niter);
+        dP2=(p2_f-p2_0)/((double)niter);
 
         /*We integrate */
         for(i=0;i<niter;i++)
         {
-                currW=w_0+(double)i*dW;
+                currW=w_0+((double)i+0.5)*dW;
                 for(j=0;j<niter;j++)
                 {
-                        currP2=p2_0+(double)j*dP2;
+                        currP2=p2_0+((double)j+0.5)*dP2;
                         E+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*vv(tau,currW,currP2)/tau/tau;
                 }
         }
@@ -52,28 +52,28 @@ double Pressure_L_0(double tau,double m0,double p2_0,double p2_f, double w_0, do
         /*We integrate */
         for(i=0;i<niter;i++)
         {
-                currW=w_0+(double)i*dW;
+                currW=w_0+((double)i+0.5)*dW;
                 for(j=0;j<niter;j++)
                 {
-                        currP2=p2_0+(double)j*dP2;
-                        Pr_L+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW*vv(tau,currW,currP2))/tau/tau;
+                        currP2=p2_0+((double)j+0.5)*dP2;
+                        Pr_L+=2*PI*dW*dP2*f_0(tau,currW,currP2,m0)*(currW*currW/vv(tau,currW,currP2))/tau/tau;
                 }
         }
         return Pr_L;
 }
 
 
-int main2(void){
-        double energy1=Energy_0(1,1,0,300,0,10,6000);
-        double energy2=Energy_0(1,1,0,300,0,10,7000);
-        double energy3=Energy_0(1,1,0,300,0,10,8000);
-        double energy4=Energy_0(1,1,0,300,0,10,9000);
-        double energy5=Energy_0(1,1,0,300,0,10,10000);
-        double energy6=Energy_0(1,1,0,300,0,10,11000);
-        double energy7=Energy_0(1,1,0,300,0,10,12000);
-        double energy8=Energy_0(1,1,0,300,0,10,13000);
-        double energy9=Energy_0(1,1,0,300,0,10,14000);
-        double energy10=Energy_0(1,1,0,300,0,10,15000);
+int main(void){
+        double energy1=Energy_0(1,1,0,100,0,10,100);
+        double energy2=Energy_0(1,1,0,100,0,10,200);
+        double energy3=Energy_0(1,1,0,100,0,10,300);
+        double energy4=Energy_0(1,1,0,100,0,10,400);
+        double energy5=Energy_0(1,1,0,100,0,10,500);
+        double energy6=Energy_0(1,1,0,100,0,10,600);
+        double energy7=Energy_0(1,1,0,100,0,10,1000);
+        double energy8=Energy_0(1,1,0,100,0,10,1200);
+        double energy9=Energy_0(1,1,0,100,0,10,1300);
+        double energy10=Energy_0(1,1,0,100,0,10,1400);
         printf("\n\nInitial Energy1= %.15f\n\n",energy1);
         printf("\n\nInitial Energy2= %.15f\n\n",energy2);
         printf("\n\nInitial Energy3= %.15f\n\n",energy3);
@@ -87,17 +87,17 @@ int main2(void){
         return 0;
 }
 
-int main(void){
-	double energy1=Pressure_L_0(1,1,0,300,0,10,6000);
-	double energy2=Pressure_L_0(1,1,0,300,0,10,7000);
-	double energy3=Pressure_L_0(1,1,0,300,0,10,8000);
-	double energy4=Pressure_L_0(1,1,0,300,0,10,9000);
-	double energy5=Pressure_L_0(1,1,0,300,0,10,10000);
-	double energy6=Pressure_L_0(1,1,0,300,0,10,11000);
-	double energy7=Pressure_L_0(1,1,0,300,0,10,12000);
-	double energy8=Pressure_L_0(1,1,0,300,0,10,13000);
-	double energy9=Pressure_L_0(1,1,0,300,0,10,14000);
-	double energy10=Pressure_L_0(1,1,0,300,0,10,15000);
+int main1(void){
+	double energy1=Pressure_L_0(1,1,0,300,0,10,100);
+	double energy2=Pressure_L_0(1,1,0,300,0,10,200);
+	double energy3=Pressure_L_0(1,1,0,300,0,10,300);
+	double energy4=Pressure_L_0(1,1,0,300,0,10,400);
+	double energy5=Pressure_L_0(1,1,0,300,0,10,500);
+	double energy6=Pressure_L_0(1,1,0,300,0,10,600);
+	double energy7=Pressure_L_0(1,1,0,300,0,10,700);
+	double energy8=Pressure_L_0(1,1,0,300,0,10,800);
+	double energy9=Pressure_L_0(1,1,0,300,0,10,900);
+	double energy10=Pressure_L_0(1,1,0,300,0,10,1000);
 	printf("\n\nInitial PL1= %.15f\n\n",energy1);
 	printf("\n\nInitial PL2= %.15f\n\n",energy2);
 	printf("\n\nInitial PL3= %.15f\n\n",energy3);
