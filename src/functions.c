@@ -252,7 +252,7 @@ double Energy_0_zero(double tau,double m0)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+((double)j+0.5)*dP2;
-                        E+=PI*dW*dP2*f_0_zero(tau,currW,currP2,m0)*vv_zero(tau,currW,currP2)/tau/tau;
+                        E+=2*PI*dW*dP2*f_0_zero(tau,currW,currP2,m0)*vv_zero(tau,currW,currP2)/tau/tau;
                 }
         }
         return E-1;

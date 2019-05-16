@@ -63,17 +63,17 @@ double Pressure_L_0(double tau,double m0,double p2_0,double p2_f, double w_0, do
 }
 
 
-int main(void){
-        double energy1=Energy_0(1,1,0,100,0,10,100);
-        double energy2=Energy_0(1,1,0,100,0,10,200);
-        double energy3=Energy_0(1,1,0,100,0,10,300);
-        double energy4=Energy_0(1,1,0,100,0,10,400);
-        double energy5=Energy_0(1,1,0,100,0,10,500);
-        double energy6=Energy_0(1,1,0,100,0,10,600);
-        double energy7=Energy_0(1,1,0,100,0,10,1000);
-        double energy8=Energy_0(1,1,0,100,0,10,1200);
-        double energy9=Energy_0(1,1,0,100,0,10,1300);
-        double energy10=Energy_0(1,1,0,100,0,10,1400);
+int main1(void){
+        double energy1=Energy_0(1,1,0,300,0,30,100);
+        double energy2=Energy_0(1,1,0,300,0,30,200);
+        double energy3=Energy_0(1,1,0,300,0,30,300);
+        double energy4=Energy_0(1,1,0,300,0,30,400);
+        double energy5=Energy_0(1,1,0,300,0,30,500);
+        double energy6=Energy_0(1,1,0,300,0,30,600);
+        double energy7=Energy_0(1,1,0,300,0,30,1000);
+        double energy8=Energy_0(1,1,0,300,0,30,1200);
+        double energy9=Energy_0(1,1,0,300,0,30,1300);
+        double energy10=Energy_0(1,1,0,300,0,30,1400);
         printf("\n\nInitial Energy1= %.15f\n\n",energy1);
         printf("\n\nInitial Energy2= %.15f\n\n",energy2);
         printf("\n\nInitial Energy3= %.15f\n\n",energy3);
@@ -87,7 +87,7 @@ int main(void){
         return 0;
 }
 
-int main1(void){
+int main(void){
 	double energy1=Pressure_L_0(1,1,0,300,0,10,100);
 	double energy2=Pressure_L_0(1,1,0,300,0,10,200);
 	double energy3=Pressure_L_0(1,1,0,300,0,10,300);

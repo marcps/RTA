@@ -5,18 +5,18 @@
 #include "constants.h"
 #include "functions.h"
 
-double zero_of_m0()
+double zero_of_m0(double tau)
 {
 /*Returns the root of the function foo*/
 	int i,n_max;
 	double a,b,a1,b1,p,tol;
 
 	//Can this intervals be calculated?
-	a=0.000001;
+	a=0.0001;
 	b=1000;
 
-	tol=0.00000001;
-	if(Energy_0_zero(T_0,a)*Energy_0_zero(T_0,b)>0)
+	tol=0.000000001;
+	if((Energy_0(tau,a)-1)*(Energy_0(tau,b)-1)>0)
 	{
 		printf("[!]Error when calculating the root of the initial energy\n");
 		return 1;
@@ -29,7 +29,7 @@ double zero_of_m0()
 	for(i=0;i<n_max;i++)
 	{
 		p=(a1+b1)/2.;
-		if((Energy_0_zero(T_0,a1)*Energy_0_zero(T_0,p))<=0.)
+		if(((Energy_0(tau,a1)-1)*(Energy_0(tau,p)-1))<=0.)
 		{
 			b1=p;
 		}
@@ -39,7 +39,7 @@ double zero_of_m0()
 		}
 
 	}
-	printf("\nThe minimized parameter is: m0= %.5f\n",
+	printf("\n[*]The minimized parameter is: m0= %.5f\n\n",
 		p);
 	return p;
 }

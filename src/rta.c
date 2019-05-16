@@ -28,7 +28,7 @@ int main (int argc, char **argv)
 	double *pressure_L;//deri_PL;
 
 	//----------------- MATRIX AND VECTOR INIT---------------------
-	f = (double **)malloc(NITER*sizeof(double));
+	f = (double **)malloc((NITER+1)*sizeof(double));
 	if(f==NULL)
 	{
 		printf("NOT Enough memory!\n Exitting...\n");
@@ -55,8 +55,8 @@ int main (int argc, char **argv)
 		printf("\n[!]ERROR. Please type the names of the output .dat files!\n\n[info]run ./EXEC <1>.dat <2>.dat <3>.dat\n\n\n");
 		return 1;
 	}
-
 	FILE *fp,*fp1,*fp2;
+
 	if(strcmp(argv[1],argv[2])==0 || strcmp(argv[2],argv[3])==0 || strcmp(argv[1],argv[3])==0)
 	{
 		printf("\n[!]ERROR. Filenames must be DIFFERENT!\n\n");
@@ -67,19 +67,16 @@ int main (int argc, char **argv)
 	fp2=fopen(argv[3],"w");
 	//-------------------------------------------------------------
 
-	///////////////////////////m0=zero_of_m0(); //in the library zer0.h
-	m0=1;///////////////////////////////////////////////////////////////// TESTING
+	m0=zero_of_m0(T_0); //in the library zer0.h
 
 	//MATRIX INITIALIZATION
-        matrix_init(NITER,f);
 
 	//1st iteration
 	energy[0]=Energy_0(T_0,m0);
 	pressure_L[0]=Pressure_L_0(T_0,m0);
 	Temperature[0]=Tempr(energy[0]);
-
-	printf("[*]Iteration 0: Energy= %.15f; Temperature= %.15f; Pressure_L= %.15f\n",
-		energy[0],Temperature[0],pressure_L[0]);
+	printf("[*]Iteration %4d: Energy= %.15f; Temperature= %.15f; Pressure_L= %.15f\n",
+		0,energy[0],Temperature[0],pressure_L[0]);
 	fprintf(fp,"%.15f %.15f\n",
 		T_0,Temperature[0]*pow(T_0,1/3));
 
@@ -100,10 +97,10 @@ int main (int argc, char **argv)
 		deri_T=(Temperature[1]-Temperature[0])/dTau;
 
 		//This has to be a very small number
-		sn=fabs((currTau*deri_E)/(energy[1]+pressure_L[1]))-1;
+		sn=fabs(currTau*deri_E/(energy[1]+pressure_L[1]))-1;
 
 		//--------------------------------- PRINTING -----------------------------------------------------------
-		printf("[*]Iteration %d: Energy= %.15f; deriE= %.5f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",
+		printf("[*]Iteration %4d: Energy= %.15f; deriE= %.15f; Temperature=%.15f; Pressure_L= %.15f; Sn= %.10f\n",
 			i,energy[1],deri_E,Temperature[1],pressure_L[1],sn);
 
 		fprintf(fp,"%.15f %.15f\n",
