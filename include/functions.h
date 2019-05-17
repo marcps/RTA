@@ -4,6 +4,7 @@ double f_0(double tau, double w, double p2, double m0);
 double f_eq(double tau, double w, double p2, double Tempr);
 double Energy_0(double tau,double m0);
 double Energy(double tau,double **f);
+double Energy_eq(double tau, double tempr);
 double Pressure_L(double tau,double **f);
 double Pressure_L_0(double tau,double m0);
 double Pressure_T(double tau,double **f);

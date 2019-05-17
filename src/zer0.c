@@ -20,6 +20,7 @@ double zero_of_m0(double tau)
 	{
 		printf("[!]Error when calculating the root of the initial energy\n");
 		return 1;
+		exit(0);
 	}
 
 	//We ESTIMATE the number of times needed

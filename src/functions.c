@@ -72,6 +72,27 @@ double Energy(double tau,double **f)
         }
         return E;
 }
+double Energy_eq(double tau, double tempr)
+{
+        /*Calculaters the ENERGY integrating over a grid of w,p2*/
+        double E,dP2,dW,currW,currP2;
+        int i,j;
+
+        E=0.0;
+        dW=(WF-W0)/((double)NITER);
+        dP2=(P2_F-P2_0)/((double)NITER);
+
+        for(i=0;i<NITER;i++)
+        {
+                currW=W0+((double)i+0.5)*dW;
+                for(j=0;j<NITER;j++)
+                {
+                        currP2=P2_0+((double)j+0.5)*dP2;
+                        E+=2*PI*dW*dP2*f_eq(tau,currW,currP2,tempr)*vv(tau,currW,currP2)/tau/tau;
+                }
+        }
+        return E;
+}
 
 double Pressure_L(double tau,double **f)
 {

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc -Iinclude/  src/convergence_rta.c src/constants.c  src/functions.c -o bin/CONV -lm -Wall
