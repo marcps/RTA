@@ -1,7 +1,7 @@
 const double PI;
 const double T_0;/*Initial time*/
 const double T_F;/*Final Time*/
-const int TNITER;/*Number of iterations for the time*/
+const double TSTEP;/*Number of iterations for the time*/
 const int NITER;/*Number of iterations for the energy*/
 const double P2_0;
 const double P2_F;

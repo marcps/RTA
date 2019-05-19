@@ -173,7 +173,7 @@ void calculate_f(double **f,double tau,double tempr, double m0)
 	/*m0 has to be calculated with the function zero_of_m0() in the library zer0.h*/
         double dW,dP2,currW,currP2;
         int i,j;
-	double dTau=(T_F-T_0)/((double)TNITER);
+	double dTau=TSTEP;
 
         dW=(WF-W0)/((double)NITER);
         dP2=(P2_F-P2_0)/((double)NITER);
@@ -196,7 +196,7 @@ void calculate_f_0(double **f,double tau,double tempr, double m0)
         /*m0 has to be calculated with the function zero_of_m0() in the library zer0.h*/
         double dW,dP2,currW,currP2;
         int i,j;
-        double dTau=(T_F-T_0)/((double)TNITER);
+        double dTau=TSTEP;
 
         dW=(WF-W0)/((double)NITER);
         dP2=(P2_F-P2_0)/((double)NITER);

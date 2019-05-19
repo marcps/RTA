@@ -1,4 +1,4 @@
-set title "Evolució temporal T_0=1; T_F=200; TSTEP=0.25; NITER=4000; P2_0=0.0; P2_F=600; W0=0; WF=600; EPS=0.2;"
+set title "Evolució temporal T_0=1; T_F=20; TSTEP=0.05; NITER=1000; P2_0=0.0; P2_F=100; W0=0; WF=100; EPS=0.2;"
 set xlabel "tau*T"
 set ylabel "T*tau^{1/3}"
 set grid
