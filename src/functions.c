@@ -8,7 +8,7 @@
 double tau_eq(double tempr)
 {
 	//The scale constant here is 1
-	double gamma=1.0;
+	double gamma=(double)5/ETA;
 	return gamma/tempr;
 }
 
@@ -20,12 +20,12 @@ double vv(double tau,double w,double p2)
 double f_0(double tau, double w, double p2, double m0)
 {
         /*f_0 is the initial state density function*/
-        return pow((1/(2*PI)),3)*exp(-sqrt((1-EPS)*w*w+p2*tau*tau)/(tau*m0));
+        return pow((1/(2*PI)),3)*exp(-sqrt((1.0-EPS)*w*w+p2*tau*tau)/(tau*m0));
 }
 
 double f_eq(double tau, double w, double p2, double tempr)
 {
-        return pow((1/(2*PI)),3)*exp(-sqrt(w*w+p2*tau*tau)/(tau*tempr));
+        return pow((1/(2*PI)),3)*exp(-sqrt((w*w+p2*tau*tau)/(tau*tempr)));
 }
 
 double Energy_0(double tau,double m0)
@@ -155,7 +155,7 @@ double Pressure_T(double tau,double **f)
                 for(j=0;j<NITER;j++)
                 {
                         currP2=P2_0+((double)j+0.5)*dP2;
-                        pT+=2*PI*dW*dP2*f[i][j]*(currP2*vv(tau,currW,currP2)); //Check if this expression is c$
+                        pT+=2*PI*dW*dP2*f[i][j]*(currP2/vv(tau,currW,currP2));
                 }
         }
         return pT;
@@ -164,7 +164,7 @@ double Pressure_T(double tau,double **f)
 double Tempr(double E)
 {
         /*Returns the TEMPERATURE*/
-        return sqrt(PI*sqrt(E/3));
+        return sqrt(sqrt(E*3.0)/PI);
 }
 
 void calculate_f(double **f,double tau,double tempr, double m0)

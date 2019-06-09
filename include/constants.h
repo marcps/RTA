@@ -10,3 +10,4 @@ const double WF;
 const double M0; //Constant for the f_0
 const double EPS;
 const double TAU0;// A constant for the f_0
+const double ETA;
