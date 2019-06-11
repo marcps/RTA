@@ -1,4 +1,6 @@
-# First Numerical Solution
+# Bachelor end project
+
+## First Numerical Solution
 
 This code is intended to solve the integral for the partition function of an ultrarrelativistic gas of massless particles in the RTA approximation.
 
